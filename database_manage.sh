@@ -39,7 +39,7 @@ create_table() {
         
         while true;  
         do
-            echo -n "Enter the format (field_name data_type (primary or none) : "
+            echo -n "Enter the format (field_name data_type (primary or none)) : "
             read field
             echo
 
@@ -96,7 +96,8 @@ insert_record() {
         primary_key=$(($primary_key+1))
     done
 
-    check_primary=$(cat ${tab_name_data} | cut -d" " -f1)
+    check_primary=$(cat ${tab_name_data} | cut -d" " -f"$(($primary_key+1))")
+    echo $check_primary
 
     echo "Enter record by format : (field1 field2 ...)"
     echo -n "Enter data : "
@@ -150,7 +151,6 @@ update_record() {
     done
 
     tab_name_data=${tab_name}_data
-    echo "$tab_name_data"
     
     
     while true;
@@ -286,9 +286,6 @@ delete_table() {
 }
 
 delete_database() {
-    # echo -n "Enter the name database : "
-    # read database
-    # echo
     cd ..
     while true;
     do
@@ -299,8 +296,6 @@ delete_database() {
         s=$(grep -w "$database" temp)
         if [ "$s" = "" ];then
             zenity --error --text="the database has not created" 
-            echo -n "the table is existed : " 
-            echo $mang
         else 
             rm temp
             break
